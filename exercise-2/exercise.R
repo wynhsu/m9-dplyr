@@ -34,10 +34,12 @@ worst.hwy.mpg.v2 <- filter(two.wheel.20.mph.v2, id, hwy==min(hwy))
 
 # Write a function that takes a `year` and a `make` as parameters, and returns 
 # The vehicle that gets the most hwy miles/gallon of vehicles of that make in that year
-most.hwy.miles.per.gallon.v2 <- function(year, make) {
-  filtered <- filter(vehicles, make==make, year==year)
+most.hwy.miles.per.gallon.v2 <- function(v2_year, v2_make) {
+  filtered <- filter(vehicles, make==v2_make, year==v2_year) %>% 
+              filter(hwy==max(hwy))
+  return(filtered)
 }
 
 # What was the most efficient honda model of 1995?
-
+car2 <- most.hwy.miles.per.gallon.v2(1995, 'Honda')
 
