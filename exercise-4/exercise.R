@@ -7,36 +7,44 @@ library(dplyr)
 
 # The data.frame flights should now be accessible to you.  View it, 
 # and get some basic information about the number of rows/columns
-
+View(flights)
+num.rows <- nrow(flights)
+num.cols <- ncol(flights)
 
 # Add a column that is the amount of time gained in the air (`arr_delay` - `dep_delay`)
-
+flights <- mutate(flights, time_gained = arr_delay - dep_delay)
 
 # Sort your data.frame desceding by the column you just created
-
+flights <- arrange(flights, desc(time_gained))
 
 # Try doing the last 2 steps in a single operation using the pipe operator
-
+flights <- mutate(flights, time_gained = arr_delay - dep_delay) %>% 
+           arrange(desc(time_gained))
 
 # Make a histogram of the amount of gain using the `hist` command
-
+hist(flights$time_gained)
 
 # On average, did flights gain or lose time?
-
+average <- mean(flights$time_gained, na.rm = TRUE)
 
 # Create a data.frame that is of flights headed to seatac ('SEA'), 
-
+seatac <- filter(flights, dest %in% 'SEA')
 
 # On average, did flights to seatac gain or loose time?
+average.seatac <- mean(seatac$time_gained, na.rm = TRUE)
 
 ### Bonus ###
 # Write a function that allows you to specify an origin, a destination, and a column of interest
 # that returns a data.frame of flights from the origin to the destination and only the column of interest
 ## Hint: see slides on standard evaluation
-
+OriginDestInterest <- function(my_origin, my_dest, my_interest) {
+  answer <- filter(flights, origin %in% my_origin & dest %in% my_dest) %>% 
+            select_(my_interest)
+  return(answer)
+}
 
 # Retireve the air_time column for flights from JFK to SEA
-
+JFK_SEA <- OriginDestInterest('JFK', 'SEA', 'air_time')
 
 # What was the average air time of those flights (in hours)?  
 
